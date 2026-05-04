@@ -1,7 +1,8 @@
-import express from 'express';
+import express, { type Response } from 'express';
 const router = express.Router();
 import patientsService from '../service/patientsService.ts';
-router.get('/', (_req, res) => {
+import type { NonSensitiveInfo } from '../../types.ts';
+router.get('/', (_req, res: Response<NonSensitiveInfo[]>) => {
     const patientsData = patientsService.getFilteredPatients();
     res.send(patientsData);
 });
