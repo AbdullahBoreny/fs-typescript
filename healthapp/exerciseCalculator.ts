@@ -1,4 +1,4 @@
-
+import { parseExerciseArguments } from './utils.ts';
 interface Result {
     periodLength: number,
     trainingDays: number,
@@ -21,7 +21,7 @@ function calculateExercises(hours: number[], target: number): Result {
         rating = 3;
         ratingDescription = "greet job";
     }
-    else if (average >= target - 1) {
+    else if (average > target - 1) {
         rating = 2;
         ratingDescription = 'not too bad but could be better';
     }
@@ -41,6 +41,19 @@ function calculateExercises(hours: number[], target: number): Result {
 
 
     };
+    console.log(result);
     return result;
 
 }
+
+try {
+    const { target, dailyExercises } = parseExerciseArguments(process.argv);
+    calculateExercises(dailyExercises, target);
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.';
+    if (error instanceof Error) {
+        errorMessage += error.message;
+    }
+    console.log(errorMessage);
+}
+

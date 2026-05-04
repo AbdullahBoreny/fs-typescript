@@ -1,4 +1,4 @@
-import parseArguments from "./utils.ts";
+import { parseMultiplyArguments } from "./utils.ts";
 
 function calculateBmi(height: number, weight: number): void {
 
@@ -36,7 +36,7 @@ function calculateBmi(height: number, weight: number): void {
 }
 
 try {
-    const { value1, value2 } = parseArguments(process.argv);
+    const { value1, value2 } = parseMultiplyArguments(process.argv);
     calculateBmi(value1, value2);
 } catch (error: unknown) {
     let errorMessage = 'Something bad happened.';
