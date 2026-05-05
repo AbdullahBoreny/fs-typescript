@@ -70,7 +70,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
-                <HealthRatingBar showText={false} rating={1} />
+                <HealthRatingBar showText={true} rating={1} />
               </TableCell>
             </TableRow>
           ))}

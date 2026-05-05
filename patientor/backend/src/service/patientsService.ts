@@ -1,11 +1,11 @@
 import patientsEntries from "../../data/patients.ts";
-import type { Patient, NonSensitiveInfo, newPatient } from "../types.ts";
+import type { Patient, NonSensitiveInfo, NewPatient } from "../types.ts";
 import { v1 as uuid } from 'uuid';
 
 const getPatients = (): Patient[] => {
     return patientsEntries;
 };
-const addPatients = (patient: newPatient): Patient => {
+const addPatients = (patient: NewPatient): Patient => {
 
     const newPatient = {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
