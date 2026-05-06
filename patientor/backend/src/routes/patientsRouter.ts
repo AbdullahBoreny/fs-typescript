@@ -1,7 +1,9 @@
 import express, { type Response, type NextFunction, type Request } from 'express';
 const router = express.Router();
 import z from 'zod';
-
+interface Foo {
+    id: string;
+}
 import patientsService from '../service/patientsService.ts';
 import { type NewPatient, newPatientSchema, type NonSensitiveInfo, type Patient } from '../types.ts';
 
@@ -32,6 +34,12 @@ router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, 
     const addedPatient = patientsService.addPatients(req.body);
     res.json(addedPatient);
 
+});
+router.get('/:id', (req: Request<Foo, unknown, unknown, unknown>, res: Response<Patient>) => {
+    const { id } = req.params;
+    console.log(id);
+    const patientInfo = patientsService.getById(id);
+    res.json(patientInfo);
 });
 router.use(errorMiddleware);
 export default router;
