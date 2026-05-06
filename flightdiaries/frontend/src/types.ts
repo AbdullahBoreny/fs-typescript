@@ -25,3 +25,8 @@ export interface error {
     message: string;
 
 }
+export type DiaryProps = {
+    setDiaries: React.Dispatch<React.SetStateAction<NewDiaryEntry[]>>;
+    diaries: NewDiaryEntry[];
+    setError: (errorMessage: ErrorMessage) => void;
+};
