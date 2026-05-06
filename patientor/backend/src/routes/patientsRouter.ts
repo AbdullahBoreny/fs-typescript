@@ -15,18 +15,18 @@ const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
 };
 const errorMiddleware = (error: unknown, _req: Request, res: Response, next: NextFunction) => {
     if (error instanceof z.ZodError) {
-        res.status(400).send({ error: error.issues });
+        res.status(400).json({ error: error.issues });
     } else {
         next(error);
     }
 };
 router.get('/hidden', (_req, res: Response<Patient[]>) => {
     const patientsData = patientsService.getPatients();
-    res.send(patientsData);
+    res.json(patientsData);
 });
 router.get('/', (_req, res: Response<NonSensitiveInfo[]>) => {
     const patientsData = patientsService.getFilteredPatients();
-    res.send(patientsData);
+    res.json(patientsData);
 });
 router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
     const addedPatient = patientsService.addPatients(req.body);
