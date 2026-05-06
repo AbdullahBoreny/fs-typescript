@@ -1,23 +1,29 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import axios from 'axios';
-import { type NonSensitiveDiaryEntry } from './types';
-function App() {
-  const [diaries, setDiaries] = useState<NonSensitiveDiaryEntry[]>([]);
-  useEffect(() => {
-    axios.get<NonSensitiveDiaryEntry[]>("http://localhost:4000/api/diaries")
-      .then(response => setDiaries(response.data));
-  }, []);
+import { useEffect, useState } from "react";
+import NewDiary from "./components/NewDiary";
+import service from "./service";
+import type { ErrorMessage, NewDiaryEntry, } from "./types";
+import Notify from "./components/Notify";
 
+import Diary from "./components/Diary";
+function App() {
+  const [diaries, setDiaries] = useState<NewDiaryEntry[]>([]);
+  const [error, setError] = useState<ErrorMessage | null>(null);
+  useEffect(() => {
+    service.getAll().then(data => setDiaries(data));
+  }, []);
+  function notify(errorMessage: ErrorMessage) {
+    setError(errorMessage);
+
+    setTimeout(() => {
+      setError(null);
+    }, 10000);
+  }
   return (
     <>
-      {diaries.map(diary => (
-        <ul key={diary.id}>
-          <li>{diary.weather}</li>
-          <li>{diary.date}</li>
-          <li>{diary.visibility}</li>
-        </ul>
-      ))}
+      <Notify error={error} />
+      <NewDiary setError={notify} diaries={diaries} setDiaries={setDiaries} />
+      <Diary diaries={diaries} />
+
     </>
   );
 }
