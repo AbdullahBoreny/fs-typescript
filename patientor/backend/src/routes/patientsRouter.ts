@@ -5,7 +5,7 @@ interface Foo {
     id: string;
 }
 import patientsService from '../service/patientsService.ts';
-import { type NewPatient, newPatientSchema, type NonSensitiveInfo, type Patient } from '../types.ts';
+import { type NewPatient, newPatientSchema, type NonSensitiveInfo, type Patient } from '../../types/types.ts';
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
     try {

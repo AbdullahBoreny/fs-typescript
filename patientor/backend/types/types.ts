@@ -1,4 +1,5 @@
 import z from "zod";
+import type { Entry } from "./EntriesTypes.ts";
 
 export interface Diagnosis {
     code: string;
@@ -12,9 +13,7 @@ export const Gender = {
 } as const;
 export type Gender = typeof Gender[keyof typeof Gender];
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Entry {
-}
+
 export type NewPatient = z.infer<typeof newPatientSchema>;
 
 export const newPatientSchema = z.object({
@@ -32,3 +31,5 @@ export interface Patient extends NewPatient {
 
 }
 export type NonSensitiveInfo = Omit<Patient, 'ssn' | 'entries'>;
+
+

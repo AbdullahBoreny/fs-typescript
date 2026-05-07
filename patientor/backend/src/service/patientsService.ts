@@ -1,6 +1,5 @@
 import patientsEntries from "../../data/patients.ts";
-import type { Entry } from "../types.ts";
-import { type Patient, type NonSensitiveInfo, type NewPatient } from "../types.ts";
+import { type Patient, type NonSensitiveInfo, type NewPatient } from "../../types/types.ts";
 import { v1 as uuid } from 'uuid';
 
 const getPatients = (): Patient[] => {
@@ -30,7 +29,7 @@ const getById = (id: string): Patient => {
     if (!found) {
         throw new Error('not found');
     }
-    found["entries"] = new Array<Entry>;
+
     return found;
 };
 export default {
