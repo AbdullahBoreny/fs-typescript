@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import patientsService from '../services/patients';
 import { Gender, Patient } from '../types';
@@ -28,6 +28,16 @@ export default function PatientDetails() {
             <h2>ssn: {patient?.ssn}</h2>
             <h2>occupation: {patient?.occupation}</h2>
             <h2>date of birth: {patient?.dateOfBirth}</h2>
+            <h1>entires</h1>
+            {patient?.entries.map(entry => (
+                <Fragment key={entry.id}>
+                    <h2>{entry.description}</h2>
+                    
+                    {entry.diagnosisCodes?.map(code => (
+                        <li>code: {code}</li>
+                    ))}
+                </Fragment>
+            ))}
         </>
     );
 }
