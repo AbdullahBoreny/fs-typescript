@@ -1,23 +1,25 @@
 import { useState } from "react";
 import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody } from '@mui/material';
 import axios from 'axios';
-
 import { PatientFormValues, Patient } from "../../types";
 import AddPatientModal from "../AddPatientModal";
 
 import HealthRatingBar from "../HealthRatingBar";
 
 import patientService from "../../services/patients";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
+import PatientDetails from "../PatientDetails";
 
 interface Props {
-  patients : Patient[]
-  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>
+  patients: Patient[];
+  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
 }
 
-const PatientListPage = ({ patients, setPatients } : Props ) => {
+const PatientListPage = ({ patients, setPatients }: Props) => {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+  const [id, setId] = useState<string>();
 
   const openModal = (): void => setModalOpen(true);
 
@@ -54,6 +56,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
           Patient list
         </Typography>
       </Box>
+
       <Table sx={{ marginBottom: "1em" }}>
         <TableHead>
           <TableRow>
@@ -64,7 +67,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Object.values(patients).map((patient: Patient) => (
+          {patients.map((patient: Patient) => (
             <TableRow key={patient.id}>
               <TableCell>{patient.name}</TableCell>
               <TableCell>{patient.gender}</TableCell>
@@ -72,10 +75,21 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
               <TableCell>
                 <HealthRatingBar showText={true} rating={1} />
               </TableCell>
+              <TableCell>
+
+                <Button key={patient.id} component={Link} to={`patients/${patient.id}`} variant="contained" color="primary">
+                  View
+                </Button>
+
+              </TableCell>
+
             </TableRow>
+
           ))}
+
         </TableBody>
       </Table>
+
       <AddPatientModal
         modalOpen={modalOpen}
         onSubmit={submitNewPatient}
