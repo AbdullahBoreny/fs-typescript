@@ -31,17 +31,23 @@ export default function PatientDetails() {
             <h2>ssn: {patient?.ssn}</h2>
             <h2>occupation: {patient?.occupation}</h2>
             <h2>date of birth: {patient?.dateOfBirth}</h2>
-            <h1>entires</h1>
-            {patient?.entries.map(entry => (
-                <Fragment key={entry.id}>
-                    <h2>{entry.description}</h2>
-                    {diagnoses?.map(diagnosis => (
-                        entry.diagnosisCodes?.includes(diagnosis.code) &&
-                        <li>{diagnosis.code}  {diagnosis.name}</li>
+            <div>
+                {patient?.entries.length !== 0 ? <h1>entires</h1> : null}
+                {patient?.entries.map(entry => (
+                    <Fragment key={entry.id}>
+                        <h2>{entry.description}</h2>
+                        {entry.diagnosisCodes && <h2>diagnoses</h2>}
+                        <ul>
+                            {diagnoses?.map(diagnosis => (
+                                entry.diagnosisCodes?.includes(diagnosis.code) &&
+                                <li>{diagnosis.code}  {diagnosis.name}</li>
+                            ))}
+                        </ul>
 
-                    ))}
-                </Fragment>
-            ))}
+                    </Fragment>
+                ))}
+            </div>
+
         </>
     );
 }
