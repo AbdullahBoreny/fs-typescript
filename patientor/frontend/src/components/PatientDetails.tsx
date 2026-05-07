@@ -1,16 +1,19 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import patientsService from '../services/patients';
-import { Gender, Patient } from '../types';
+import { Diagnosis, Gender, Patient } from '../types';
 import { Female, Male } from '@mui/icons-material';
 
 export default function PatientDetails() {
     const [patient, setPatient] = useState<Patient | null>(null);
+    const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
     const { id } = useParams();
 
 
-    console.log(id);
-
+    useEffect(() => {
+        patientsService.getDiagnosis()
+            .then(data => setDiagnoses(data));
+    }, []);
     useEffect(() => {
         if (!id) {
             throw Error('not found');
@@ -32,9 +35,10 @@ export default function PatientDetails() {
             {patient?.entries.map(entry => (
                 <Fragment key={entry.id}>
                     <h2>{entry.description}</h2>
-                    
-                    {entry.diagnosisCodes?.map(code => (
-                        <li>code: {code}</li>
+                    {diagnoses?.map(diagnosis => (
+                        entry.diagnosisCodes?.includes(diagnosis.code) &&
+                        <li>{diagnosis.code}  {diagnosis.name}</li>
+
                     ))}
                 </Fragment>
             ))}
