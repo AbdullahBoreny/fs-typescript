@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import patientsService from '../services/patients';
-import { Patient } from '../types';
+import { Gender, Patient } from '../types';
+import { Female, Male } from '@mui/icons-material';
 
 export default function PatientDetails() {
     const [patient, setPatient] = useState<Patient | null>(null);
     const { id } = useParams();
+
+
     console.log(id);
 
     useEffect(() => {
@@ -17,10 +20,14 @@ export default function PatientDetails() {
     }, [id]);
     return (
         <>
-            <h1>{patient?.name}</h1>
-            <h2>{patient?.ssn}</h2>
-            <h2>{patient?.occupation}</h2>
-            <h2>{patient?.dateOfBirth}</h2>
+            <h1>name {patient?.name}</h1>
+            <h2>{(patient?.gender === Gender.Male) ?
+                <div>Gender: <Male color='primary' /></div> :
+                <div>Gender: <Female color='secondary' /></div>
+            }</h2>
+            <h2>ssn: {patient?.ssn}</h2>
+            <h2>occupation: {patient?.occupation}</h2>
+            <h2>date of birth: {patient?.dateOfBirth}</h2>
         </>
     );
 }
