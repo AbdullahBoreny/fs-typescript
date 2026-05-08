@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import patientsService from '../services/patients';
 import { Diagnosis, Gender, Patient } from '../types';
 import { Female, Male } from '@mui/icons-material';
-
+import EntryDetails from './EntryDetails';
 export default function PatientDetails() {
     const [patient, setPatient] = useState<Patient | null>(null);
     const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
@@ -23,28 +23,32 @@ export default function PatientDetails() {
     }, [id]);
     return (
         <>
-            <h1>name {patient?.name}</h1>
-            <h2>{(patient?.gender === Gender.Male) ?
-                <div>Gender: <Male color='primary' /></div> :
-                <div>Gender: <Female color='secondary' /></div>
-            }</h2>
-            <h2>ssn: {patient?.ssn}</h2>
-            <h2>occupation: {patient?.occupation}</h2>
-            <h2>date of birth: {patient?.dateOfBirth}</h2>
-            <div>
+            <div className='personal-info'>
+                <h1>name {patient?.name}</h1>
+                <h2>{(patient?.gender === Gender.Male) ?
+                    <div>Gender: <Male color='primary' /></div> :
+                    <div>Gender: <Female color='secondary' /></div>
+                }</h2>
+
+                <h2>ssn: {patient?.ssn}</h2>
+                <h2>occupation: {patient?.occupation}</h2>
+                <h2>date of birth: {patient?.dateOfBirth}</h2>
+            </div>
+            <div className='entires-container'>
                 {patient?.entries.length !== 0 ? <h1>entires</h1> : null}
                 {patient?.entries.map(entry => (
-                    <Fragment key={entry.id}>
-                        <h2>{entry.description}</h2>
-                        {entry.diagnosisCodes && <h2>diagnoses</h2>}
-                        <ul>
-                            {diagnoses?.map(diagnosis => (
-                                entry.diagnosisCodes?.includes(diagnosis.code) &&
-                                <li>{diagnosis.code}  {diagnosis.name}</li>
-                            ))}
-                        </ul>
+                    <div className='entry' style={{ backgroundColor: 'red' }} key={entry.id}>
+                        <EntryDetails entry={entry} />
 
-                    </Fragment>
+                        {entry.diagnosisCodes && <h2>diagnoses</h2>}
+
+                        {diagnoses?.map(diagnosis => (
+                            entry.diagnosisCodes?.includes(diagnosis.code) &&
+                            <li>{diagnosis.code}  {diagnosis.name}</li>
+                        ))}
+
+
+                    </div>
                 ))}
             </div>
 
