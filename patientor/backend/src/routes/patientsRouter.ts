@@ -41,5 +41,11 @@ router.get('/:id', (req: Request<Foo, unknown, unknown, unknown>, res: Response<
     const patientInfo = patientsService.getById(id);
     res.json(patientInfo);
 });
+router.post('/:id/entries', (req: Request<Foo, unknown, unknown, unknown>, res: Response<Patient>) => {
+    const { id } = req.params;
+    console.log(id);
+    const patientInfo = patientsService.getById(id);
+    res.json(patientInfo);
+});
 router.use(errorMiddleware);
 export default router;
