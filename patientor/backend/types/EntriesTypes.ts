@@ -57,7 +57,7 @@ export const newEntrySchema = z.object({
     description: z.string(),
     discharge: z.object({ date: z.iso.date(), criteria: z.string() }).optional(),
     sickLeave: z.object({ startDate: z.string(), endDate: z.string() }).optional(),
-    healthCheckRating: NewHealthCheckRating.optional()
+    healthCheckRating: NewHealthCheckRating
 
 });
 
