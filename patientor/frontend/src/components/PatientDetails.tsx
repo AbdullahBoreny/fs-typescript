@@ -1,26 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import patientsService from '../services/patients';
-import { Diagnosis, Gender, Patient } from '../types';
+import { Gender } from '../types';
 import { Female, Male } from '@mui/icons-material';
 import EntryDetails from './EntryDetails';
+import usePatientDetails from './customHooks/usePatientDetails';
+import AddPatientModal from './AddPatientModal';
 export default function PatientDetails() {
-    const [patient, setPatient] = useState<Patient | null>(null);
-    const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
-    const { id } = useParams();
-
-
-    useEffect(() => {
-        patientsService.getDiagnosis()
-            .then(data => setDiagnoses(data));
-    }, []);
-    useEffect(() => {
-        if (!id) {
-            throw Error('not found');
-        }
-        patientsService.getById(id)
-            .then(data => setPatient(data));
-    }, [id]);
+    const { patient, diagnoses } = usePatientDetails();
     return (
         <>
             <div className='personal-info'>
@@ -37,7 +21,7 @@ export default function PatientDetails() {
             <div className='entires-container'>
                 {patient?.entries.length !== 0 ? <h1>entires</h1> : null}
                 {patient?.entries.map(entry => (
-                    <div className='entry' style={{ borderStyle:'solid' , borderColor: "red", borderWidth: '1px' }} key={entry.id}>
+                    <div className='entry' style={{ borderStyle: 'solid', borderColor: "red", borderWidth: '1px' }} key={entry.id}>
                         <EntryDetails entry={entry} />
 
                         {entry.diagnosisCodes && <h2>diagnoses</h2>}
@@ -51,7 +35,16 @@ export default function PatientDetails() {
                     </div>
                 ))}
             </div>
-
+            <AddPatientModal
+                dialogTitle="Add New Patient"
+                modalOpen={modalOpen}
+                onSubmit={submitNewPatient}
+                error={error}
+                onClose={closeModal}
+            />
+            <Button variant="contained" onClick={() => openModal()}>
+                Add New Patient
+            </Button>
         </>
     );
 }
