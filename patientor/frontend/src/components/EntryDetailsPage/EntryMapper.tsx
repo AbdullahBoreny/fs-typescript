@@ -1,9 +1,9 @@
-import { Entry } from "../entryTypes";
-import OccupationalHealthcare from "./Entries/OccupationalHealthcare";
-import Hospital from "./Entries/Hospital";
-import HealthCheck from "./Entries/HealthCheck";
+import { Entry } from "../../entryTypes";
+import OccupationalHealthcare from "../Entries/OccupationalHealthcare";
+import Hospital from "../Entries/Hospital";
+import HealthCheck from "../Entries/HealthCheck";
 
-export default function EntryDetails({ entry }: { entry: Entry; }) {
+export default function EntryMapper({ entry }: { entry: Entry; }) {
     const renderSwitch = (entry: Entry) => {
         switch (entry.type) {
             case 'HealthCheck':

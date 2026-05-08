@@ -1,10 +1,22 @@
-import { Gender } from '../types';
+import { Gender } from '../../types';
 import { Female, Male } from '@mui/icons-material';
-import EntryDetails from './EntryDetails';
-import usePatientDetails from './customHooks/usePatientDetails';
-import AddPatientModal from './AddPatientModal';
+import EntryMapper from './EntryMapper';
+import usePatientDetails from '../../customHooks/usePatientDetails';
+import AddPatientModal from '../AddPatientModal';
+import { useState } from 'react';
+import { Button } from '@mui/material';
 export default function PatientDetails() {
     const { patient, diagnoses } = usePatientDetails();
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [error, setError] = useState<string>();
+
+    const openModal = (): void => setModalOpen(true);
+
+    const closeModal = (): void => {
+        setModalOpen(false);
+        setError(undefined);
+    };
+
     return (
         <>
             <div className='personal-info'>
@@ -22,7 +34,7 @@ export default function PatientDetails() {
                 {patient?.entries.length !== 0 ? <h1>entires</h1> : null}
                 {patient?.entries.map(entry => (
                     <div className='entry' style={{ borderStyle: 'solid', borderColor: "red", borderWidth: '1px' }} key={entry.id}>
-                        <EntryDetails entry={entry} />
+                        <EntryMapper entry={entry} />
 
                         {entry.diagnosisCodes && <h2>diagnoses</h2>}
 
@@ -38,7 +50,7 @@ export default function PatientDetails() {
             <AddPatientModal
                 dialogTitle="Add New Patient"
                 modalOpen={modalOpen}
-                onSubmit={submitNewPatient}
+                onSubmit={() => console.log('poop')}
                 error={error}
                 onClose={closeModal}
             />

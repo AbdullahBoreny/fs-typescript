@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import patientsService from '../../services/patients';
+import patientsService from '../services/patients';
 
 import { useParams } from "react-router-dom";
-import { Diagnosis, Patient } from "../../types";
+import { Diagnosis, Patient } from "../types";
 
 export default function usePatientDetails() {
     const [patient, setPatient] = useState<Patient | null>(null);

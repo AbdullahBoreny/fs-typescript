@@ -5,7 +5,7 @@ import AddPatientModal from "../AddPatientModal";
 import HealthRatingBar from "../HealthRatingBar";
 
 import { Link } from "react-router-dom";
-import usePatientModal from "../customHooks/usePatientModal";
+import usePatientModal from "../../customHooks/usePatientModal";
 interface Props {
   patients: Patient[];
   setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;

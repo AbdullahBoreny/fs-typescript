@@ -1,15 +1,18 @@
 import { useState } from "react";
 import axios from 'axios';
-import { PatientFormValues, Patient } from "../../types";
+import { PatientFormValues, Patient } from "../types";
 
 
-import patientService from "../../services/patients";
-interface Props {
+import patientService from "../services/patients";
+import { Entry } from "../entryTypes";
+interface PatientProps {
     patients: Patient[];
     setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
 }
-
-export default function usePatientModal({ patients, setPatients }: Props) {
+// interface EntryProps {
+//     entry: Entry[];
+// }
+export default function usePatientModal({ patients, setPatients }: PatientProps) {
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>();
