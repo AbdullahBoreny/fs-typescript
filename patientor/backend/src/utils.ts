@@ -13,13 +13,6 @@ export const newPatientParser = (req: Request, _res: Response, next: NextFunctio
         next(error);
     }
 };
-export const errorMiddleware = (error: unknown, _req: Request, res: Response, next: NextFunction) => {
-    if (error instanceof z.ZodError) {
-        res.status(404).json({ error: error.issues });
-    } else {
-        next(error);
-    }
-};
 export const newEntryParser = (req: Request, _res: Response, next: NextFunction) => {
     try {
         newEntrySchema.parse(req.body);
@@ -28,6 +21,14 @@ export const newEntryParser = (req: Request, _res: Response, next: NextFunction)
         next(error);
     }
 };
+export const errorMiddleware = (error: unknown, _req: Request, res: Response, next: NextFunction) => {
+    if (error instanceof z.ZodError) {
+        res.status(404).json({ error: error.issues });
+    } else {
+        next(error);
+    }
+};
+
 export function parseEntry(entry: EntryWithoutId): Entry | undefined {
     switch (entry.type) {
         case 'HealthCheck':

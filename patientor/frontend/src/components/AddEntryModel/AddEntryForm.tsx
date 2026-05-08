@@ -1,22 +1,39 @@
 import { useState, SyntheticEvent } from "react";
 
-import { TextField, Grid, Button } from '@mui/material';
-import { EntryWithoutId, HealthCheckRating } from "../../entryTypes";
+import { TextField, Grid, Button, SelectChangeEvent, InputLabel, Select, MenuItem } from '@mui/material';
+import { EntryWithoutId, HealthCheckRating, Type } from "../../entryTypes";
 
 interface Props {
 
     onCancel: () => void;
     onSubmit: (values: EntryWithoutId) => void;
 }
+interface TypeOptions {
+    value: Type;
+    label: string;
+}
 
+const typeOptions: TypeOptions[] = Object.values(Type).map(v => ({
+    value: v, label: v.toString()
+}));
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
     const [specialist, setSpecialist] = useState('');
     const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(HealthCheckRating.Healthy);
     const [date, setEntryDate] = useState('');
     const [description, setDescription] = useState('');
-    const [type, setType] = useState();
+    const [type, setType] = useState<Type>();
 
+    const onTypeChange = (event: SelectChangeEvent<string>) => {
+        event.preventDefault();
+        if (typeof event.target.value === "string") {
+            const value = event.target.value;
+            const type = Object.values(Type).find(t => t.toString() === value);
+            if (type) {
+                setType(type);
+            }
+        }
+    };
 
 
 
@@ -29,8 +46,9 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
         <div>
             <form onSubmit={addEntry}>
                 <TextField
-                    label="Name"
+                    label="Specialist"
                     fullWidth
+                    type="text"
                     value={specialist}
                     onChange={({ target }) => setSpecialist(target.value)}
                 />
@@ -41,9 +59,10 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                     onChange={({ target }) => setDescription(target.value)}
                 />
                 <TextField
-                    label="Date of entry"
+                    // label="Date of entry"
                     placeholder="YYYY-MM-DD"
                     fullWidth
+                    type="date"
                     value={date}
                     onChange={({ target }) => setEntryDate(target.value)}
                 />
@@ -53,12 +72,22 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                     value={healthCheckRating}
                     onChange={({ target }) => setHealthCheckRating(target.value)}
                 />
-                <TextField
-                    label="type"
+                <InputLabel sx={{ marginTop: 2.5 }}>Entry Type</InputLabel>
+                <Select
+                    label="Type"
                     fullWidth
                     value={type}
-                    onChange={({ target }) => setType(target.value)}
-                />
+                    onChange={onTypeChange}
+                >
+                    {typeOptions.map(option =>
+                        <MenuItem
+                            key={option.label}
+                            value={option.value}
+                        >
+                            {option.label
+                            }</MenuItem>
+                    )}
+                </Select>
 
 
 

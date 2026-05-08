@@ -1,10 +1,15 @@
 import type { Diagnosis } from "./types.ts";
+export enum Type {
+    Hospital = "Hospital",
+    OccupationalHealthcare = "OccupationalHealthcare",
+    HealthCheck = "HealthCheck"
+}
 
 export interface BaseEntry {
     id: string;
     date?: string;
     specialist?: string;
-    type?: string;
+    type?: Type;
     diagnosisCodes?: Array<Diagnosis['code']>;
     description?: string;
 }
@@ -17,7 +22,7 @@ export const HealthCheckRating = {
 export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 export interface HealthCheckEntry extends BaseEntry {
-    type?: "HealthCheck";
+    type?: Type.HealthCheck;
     healthCheckRating: HealthCheckRating;
 }
 interface SickLeave {
@@ -26,7 +31,7 @@ interface SickLeave {
 }
 export interface OccupationalHealthcareEntry extends BaseEntry {
     employerName?: string;
-    type?: "OccupationalHealthcare";
+    type?: Type.OccupationalHealthcare;
     sickLeave?: SickLeave;
 }
 interface Discharge {
@@ -34,7 +39,7 @@ interface Discharge {
     criteria: string,
 }
 export interface HospitalEntry extends BaseEntry {
-    type?: 'Hospital';
+    type?: Type.Hospital;
     discharge?: Discharge;
 }
 

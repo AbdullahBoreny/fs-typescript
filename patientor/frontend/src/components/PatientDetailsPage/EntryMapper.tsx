@@ -18,7 +18,7 @@ export default function EntryMapper({ entry }: { entry: Entry; }) {
 
     };
 
-    function assertNever(entry: never) {
+    function assertNever(entry: never): undefined {
         throw new Error(`Function not implemented ${entry}`);
     }
 
