@@ -1,6 +1,7 @@
 import { OccupationalHealthcareEntry } from "../../entryTypes";
 
 export default function OccupationalHealthcare({ entry }: { entry: OccupationalHealthcareEntry; }) {
+
     return (
         <>
             <h2>employerName: {entry.employerName}</h2>
