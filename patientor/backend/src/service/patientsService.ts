@@ -1,8 +1,8 @@
-import patients from "../../data/patients.ts";
 import patientsEntries from "../../data/patients.ts";
-import { Entry, EntryWithoutId } from "../../types/EntriesTypes.ts";
+import type { Entry, EntryWithoutId } from "../../types/EntriesTypes.ts";
 import { type Patient, type NonSensitiveInfo, type NewPatient } from "../../types/types.ts";
 import { v1 as uuid } from 'uuid';
+import * as middleWares from '../utils.ts';
 
 const getPatients = (): Patient[] => {
     return patientsEntries;
@@ -33,17 +33,21 @@ const getById = (id: string): Patient => {
     }
     return found;
 };
-const addEntry = (id: string): EntryWithoutId => {
+
+const addEntry = (id: string, entry: EntryWithoutId): Entry => {
+
+
     const foundPatient = patientsEntries.find(patient => patient.id === id);
-    if (foundPatient) {
-        const newEntry: Entry = {
-            id: uuid(),
-            
-
-
-        };
+    if (!foundPatient) {
+        throw new Error('patient not found' + foundPatient);
     }
 
+    const foundEntry = middleWares.parseEntry(entry);
+    if (!foundEntry) {
+        throw new Error('no type match this entry');
+    }
+    foundPatient.entries.push(foundEntry);
+    return foundEntry;
 
 };
 export default {

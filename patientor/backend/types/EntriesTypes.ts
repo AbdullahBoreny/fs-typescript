@@ -1,3 +1,4 @@
+import z from "zod";
 import type { Diagnosis } from "./types.ts";
 
 export interface BaseEntry {
@@ -37,6 +38,29 @@ export interface HospitalEntry extends BaseEntry {
     type: 'Hospital';
     discharge: Discharge;
 }
+const NewHealthCheckRating = z.union([
+    z.literal(HealthCheckRating.Healthy),
+    z.literal(HealthCheckRating.LowRisk),
+    z.literal(HealthCheckRating.HighRisk),
+    z.literal(HealthCheckRating.CriticalRisk),
+]);
+export type NewHealthCheckRating = z.infer<typeof NewHealthCheckRating>;
+
+export type newEntry = z.infer<typeof newEntrySchema>;
+
+export const newEntrySchema = z.object({
+
+    date: z.iso.date(),
+    employerName: z.string(),
+    specialist: z.string(),
+    type: z.string(),
+    description: z.string(),
+    discharge: z.object({ date: z.iso.date(), criteria: z.string() }).optional(),
+    sickLeave: z.object({ startDate: z.string(), endDate: z.string() }).optional(),
+    healthCheckRating: NewHealthCheckRating.optional()
+
+});
+
 
 
 export type Entry =
