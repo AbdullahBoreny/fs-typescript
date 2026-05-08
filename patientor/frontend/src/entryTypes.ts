@@ -2,31 +2,31 @@ import type { Diagnosis } from "./types.ts";
 
 export interface BaseEntry {
     id: string;
-    date: string;
-    specialist: string;
-    type: string;
+    date?: string;
+    specialist?: string;
+    type?: string;
     diagnosisCodes?: Array<Diagnosis['code']>;
-    description: string;
+    description?: string;
 }
-const HealthCheckRating = {
+export const HealthCheckRating = {
     Healthy: 0,
     LowRisk: 1,
     HighRisk: 2,
     CriticalRisk: 3
 } as const;
-type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
+export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 export interface HealthCheckEntry extends BaseEntry {
-    type: "HealthCheck";
+    type?: "HealthCheck";
     healthCheckRating: HealthCheckRating;
 }
 interface SickLeave {
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
 }
 export interface OccupationalHealthcareEntry extends BaseEntry {
-    employerName: string;
-    type: "OccupationalHealthcare";
+    employerName?: string;
+    type?: "OccupationalHealthcare";
     sickLeave?: SickLeave;
 }
 interface Discharge {
@@ -34,8 +34,8 @@ interface Discharge {
     criteria: string,
 }
 export interface HospitalEntry extends BaseEntry {
-    type: 'Hospital';
-    discharge: Discharge;
+    type?: 'Hospital';
+    discharge?: Discharge;
 }
 
 

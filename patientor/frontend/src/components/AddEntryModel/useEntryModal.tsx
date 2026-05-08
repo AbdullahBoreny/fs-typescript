@@ -1,18 +1,12 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import axios from 'axios';
-import { PatientFormValues, Patient } from "../types";
+import patientService from "../../services/patients";
+import { EntryWithoutId } from "../../entryTypes";
+import usePatientDetails from "../../customHooks/usePatientDetails";
+import { Patient } from "../../types";
 
-
-import patientService from "../services/patients";
-interface PatientProps {
-    patients: Patient[];
-    setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
-}
-// interface EntryProps {
-//     entry: Entry[];
-// }
-export default function usePatientModal({ patients, setPatients }: PatientProps) {
-
+export default function useEntryModal(setPatient: Dispatch<SetStateAction<Patient | undefined>>, patient: Patient | undefined) {
+    const { id } = usePatientDetails();
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>();
 
@@ -23,10 +17,17 @@ export default function usePatientModal({ patients, setPatients }: PatientProps)
         setError(undefined);
     };
 
-    const submitNewPatient = async (values: PatientFormValues) => {
+    const submitNewEntry = async (entryData: EntryWithoutId) => {
         try {
-            const patient = await patientService.create(values);
-            setPatients(patients.concat(patient));
+            if (!id || !patient) {
+
+                throw new Error(id + 'not found');
+            }
+            console.log(id);
+            const entry = await patientService.addEntry(id, entryData);
+
+            setPatient({ ...patient, entries: patient.entries.concat(entry) });
+
             setModalOpen(false);
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
@@ -43,5 +44,5 @@ export default function usePatientModal({ patients, setPatients }: PatientProps)
             }
         }
     };
-    return { modalOpen, error, setError, openModal, submitNewPatient, closeModal };
+    return { modalOpen, error, setError, openModal, submitNewEntry, closeModal };
 }

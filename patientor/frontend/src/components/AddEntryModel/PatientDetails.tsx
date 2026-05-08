@@ -1,22 +1,15 @@
 import { Gender } from '../../types';
 import { Female, Male } from '@mui/icons-material';
-import EntryMapper from './EntryMapper';
+import EntryMapper from '../EntryDetailsPage/EntryMapper';
 import usePatientDetails from '../../customHooks/usePatientDetails';
-import AddPatientModal from '../AddPatientModal';
-import { useState } from 'react';
 import { Button } from '@mui/material';
+import AddEntryModal from '.';
+import useEntryModal from './useEntryModal';
 export default function PatientDetails() {
-    const { patient, diagnoses } = usePatientDetails();
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [error, setError] = useState<string>();
 
-    const openModal = (): void => setModalOpen(true);
 
-    const closeModal = (): void => {
-        setModalOpen(false);
-        setError(undefined);
-    };
-
+    const { patient, diagnoses, setPatient } = usePatientDetails();
+    const { openModal, submitNewEntry, error, closeModal, modalOpen } = useEntryModal(setPatient, patient);
     return (
         <>
             <div className='personal-info'>
@@ -47,15 +40,15 @@ export default function PatientDetails() {
                     </div>
                 ))}
             </div>
-            <AddPatientModal
-                dialogTitle="Add New Patient"
+            <AddEntryModal
+                dialogTitle="Add New Entry"
                 modalOpen={modalOpen}
-                onSubmit={() => console.log('poop')}
+                onSubmit={submitNewEntry}
                 error={error}
                 onClose={closeModal}
             />
             <Button variant="contained" onClick={() => openModal()}>
-                Add New Patient
+                Add New Entry
             </Button>
         </>
     );

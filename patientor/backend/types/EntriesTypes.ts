@@ -51,7 +51,7 @@ export type newEntry = z.infer<typeof newEntrySchema>;
 export const newEntrySchema = z.object({
 
     date: z.iso.date(),
-    employerName: z.string(),
+    employerName: z.string().optional(),
     specialist: z.string(),
     type: z.string(),
     description: z.string(),

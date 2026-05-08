@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { Diagnosis, Patient } from "../types";
 
 export default function usePatientDetails() {
-    const [patient, setPatient] = useState<Patient | null>(null);
+    const [patient, setPatient] = useState<Patient>();
     const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
     const { id } = useParams();
 
@@ -21,5 +21,5 @@ export default function usePatientDetails() {
         patientsService.getById(id)
             .then(data => setPatient(data));
     }, [id]);
-    return { patient, diagnoses, id };
+    return { patient, diagnoses, id, setPatient };
 }

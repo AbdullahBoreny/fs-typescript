@@ -28,7 +28,7 @@ router.get('/:id', (req: Request<{ id: string; }, unknown, unknown, unknown>, re
 });
 router.post('/:id/entries', middleWares.newEntryParser, (req: Request<{ id: string; }, unknown, EntryWithoutId, unknown>, res: Response<Entry>) => {
     const { id } = req.params;
-
+    console.log(id);
     const patientInfo = patientsService.addEntry(id, req.body);
     console.log(patientInfo);
     res.json(patientInfo);
