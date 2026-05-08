@@ -19,6 +19,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
 
 
 
+
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
         onSubmit({ specialist, healthCheckRating, description, date, type });

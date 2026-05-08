@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import axios from 'axios';
-import patientService from "../../services/patients";
-import { EntryWithoutId } from "../../entryTypes";
-import usePatientDetails from "../../customHooks/usePatientDetails";
-import { Patient } from "../../types";
+import patientService from "../services/patients";
+import { EntryWithoutId } from "../entryTypes";
+import usePatientDetails from "./usePatientDetails";
+import { Patient } from "../types";
 
 export default function useEntryModal(setPatient: Dispatch<SetStateAction<Patient | undefined>>, patient: Patient | undefined) {
     const { id } = usePatientDetails();

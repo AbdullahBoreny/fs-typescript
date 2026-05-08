@@ -1,10 +1,10 @@
 import { Gender } from '../../types';
 import { Female, Male } from '@mui/icons-material';
-import EntryMapper from '../EntryDetailsPage/EntryMapper';
+import EntryMapper from './EntryMapper';
 import usePatientDetails from '../../customHooks/usePatientDetails';
 import { Button } from '@mui/material';
-import AddEntryModal from '.';
-import useEntryModal from './useEntryModal';
+import AddEntryModal from '../AddEntryModel';
+import useEntryModal from '../../customHooks/useEntryModal';
 export default function PatientDetails() {
 
 
@@ -33,7 +33,7 @@ export default function PatientDetails() {
 
                         {diagnoses?.map(diagnosis => (
                             entry.diagnosisCodes?.includes(diagnosis.code) &&
-                            <li>{diagnosis.code}  {diagnosis.name}</li>
+                            <li key={diagnosis.code}>{diagnosis.code}  {diagnosis.name}</li>
                         ))}
 
 
