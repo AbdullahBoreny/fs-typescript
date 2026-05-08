@@ -1,4 +1,4 @@
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import patientsService from '../services/patients';
 import { Diagnosis, Gender, Patient } from '../types';
@@ -37,7 +37,7 @@ export default function PatientDetails() {
             <div className='entires-container'>
                 {patient?.entries.length !== 0 ? <h1>entires</h1> : null}
                 {patient?.entries.map(entry => (
-                    <div className='entry' style={{ backgroundColor: 'red' }} key={entry.id}>
+                    <div className='entry' style={{ borderStyle:'solid' , borderColor: "red", borderWidth: '1px' }} key={entry.id}>
                         <EntryDetails entry={entry} />
 
                         {entry.diagnosisCodes && <h2>diagnoses</h2>}

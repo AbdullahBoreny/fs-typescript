@@ -1,10 +1,10 @@
+import { HospitalIcon } from "lucide-react";
 import { OccupationalHealthcareEntry } from "../../entryTypes";
-
 export default function OccupationalHealthcare({ entry }: { entry: OccupationalHealthcareEntry; }) {
 
     return (
         <>
-            <h2>employerName: {entry.employerName}</h2>
+            <h2>employerName: {entry.employerName} </h2>
             <h2>DESCRIPTION: {entry.description}</h2>
             {entry.sickLeave &&
                 <div>
