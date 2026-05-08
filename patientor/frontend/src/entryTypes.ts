@@ -9,7 +9,7 @@ export interface BaseEntry {
     id: string;
     date?: string;
     specialist?: string;
-    type?: Type;
+    type: Type;
     diagnosisCodes?: Array<Diagnosis['code']>;
     description?: string;
 }
@@ -22,7 +22,7 @@ export const HealthCheckRating = {
 export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 export interface HealthCheckEntry extends BaseEntry {
-    type?: Type.HealthCheck;
+    type: Type.HealthCheck;
     healthCheckRating: HealthCheckRating;
 }
 interface SickLeave {
@@ -31,7 +31,7 @@ interface SickLeave {
 }
 export interface OccupationalHealthcareEntry extends BaseEntry {
     employerName?: string;
-    type?: Type.OccupationalHealthcare;
+    type: Type.OccupationalHealthcare;
     sickLeave?: SickLeave;
 }
 interface Discharge {
@@ -39,7 +39,7 @@ interface Discharge {
     criteria: string,
 }
 export interface HospitalEntry extends BaseEntry {
-    type?: Type.Hospital;
+    type: Type.Hospital;
     discharge?: Discharge;
 }
 

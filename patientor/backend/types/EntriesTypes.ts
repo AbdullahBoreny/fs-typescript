@@ -54,6 +54,7 @@ export const newEntrySchema = z.object({
     employerName: z.string().optional(),
     specialist: z.string(),
     type: z.string(),
+
     description: z.string(),
     discharge: z.object({ date: z.iso.date(), criteria: z.string() }).optional(),
     sickLeave: z.object({ startDate: z.string(), endDate: z.string() }).optional(),

@@ -22,7 +22,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
     const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(HealthCheckRating.Healthy);
     const [date, setEntryDate] = useState('');
     const [description, setDescription] = useState('');
-    const [type, setType] = useState<Type>();
+    const [type, setType] = useState<Type>(Type.HealthCheck);
 
     const onTypeChange = (event: SelectChangeEvent<string>) => {
         event.preventDefault();
@@ -77,15 +77,13 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                     label="Type"
                     fullWidth
                     value={type}
-                    onChange={onTypeChange}
-                >
+                    onChange={onTypeChange}>
                     {typeOptions.map(option =>
                         <MenuItem
                             key={option.label}
-                            value={option.value}
-                        >
-                            {option.label
-                            }</MenuItem>
+                            value={option.value}>
+                            {option.label}
+                        </MenuItem>
                     )}
                 </Select>
 
