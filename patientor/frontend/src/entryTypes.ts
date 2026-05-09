@@ -15,9 +15,11 @@ export interface BaseEntry {
     date?: string;
     specialist?: string;
     type: Type;
+
     diagnosisCodes: Array<Diagnosis['code']>;
     description?: string;
 }
+
 export const HealthCheckRating = {
     Healthy: 0,
     LowRisk: 1,
@@ -28,7 +30,7 @@ export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthChec
 
 export interface HealthCheckEntry extends BaseEntry {
     type: Type.HealthCheck;
-    healthCheckRating: HealthCheckRating;
+    healthCheckRating?: HealthCheckRating;
 }
 interface SickLeave {
     startDate?: string;
@@ -40,8 +42,8 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
     sickLeave?: SickLeave;
 }
 interface Discharge {
-    date: string;
-    criteria: string,
+    date?: string;
+    criteria?: string,
 }
 export interface HospitalEntry extends BaseEntry {
     type: Type.Hospital;

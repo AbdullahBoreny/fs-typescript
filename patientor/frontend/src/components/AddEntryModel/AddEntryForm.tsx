@@ -1,14 +1,16 @@
-import { useState, SyntheticEvent } from "react";
+import { SyntheticEvent } from "react";
 
-import { TextField, Grid, Button, SelectChangeEvent, InputLabel, Select, MenuItem, Box, Chip } from '@mui/material';
-import { EntryWithoutId, HealthCheckRating, Type } from "../../entryTypes";
+import { TextField, Grid, Button, InputLabel, Select, MenuItem, Box, Chip } from '@mui/material';
+import { HealthCheckRating, Type } from "../../entryTypes";
 import usePatientDetails from "../../customHooks/usePatientDetails";
+import useEntryForm, { entryFormData } from "../../customHooks/useEntryForm";
 
-interface Props {
+interface ModalProps {
 
     onCancel: () => void;
-    onSubmit: (values: EntryWithoutId) => void;
+    onSubmit: (values: entryFormData) => void;
 }
+
 interface TypeOptions {
     value: Type;
     label: string;
@@ -40,54 +42,14 @@ const MenuProps = {
         },
     },
 };
-const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
+
+const AddEntryForm = ({ onCancel, onSubmit }: ModalProps) => {
     const { diagnoses } = usePatientDetails();
-
-    const [specialist, setSpecialist] = useState('');
-    const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(HealthCheckRating.Healthy);
-    const [date, setEntryDate] = useState('');
-    const [description, setDescription] = useState('');
-    // const [diagnosisCodes, setDiagnosisCodes] = useState<Array<Diagnosis['code']>>();
-    const [code, setCode] = useState<string[]>([]);
-    const [type, setType] = useState<Type>(Type.HealthCheck);
-
-
-    const onTypeChange = (event: SelectChangeEvent<string>) => {
-        event.preventDefault();
-        if (typeof event.target.value === "string") {
-            const value = event.target.value;
-            const type = Object.values(Type).find(t => t.toString() === value);
-            if (type) {
-                setType(type);
-            }
-        }
-    };
-    const onHealthRatingChange = (event: SelectChangeEvent<number>) => {
-        event.preventDefault();
-        if (typeof event.target.value === "number") {
-            const value = event.target.value;
-            const ratingValue = Object.values(HealthCheckRating).find(t => t === value);
-
-            if (ratingValue) {
-                console.log();
-                setHealthCheckRating(ratingValue);
-            }
-        }
-    };
-    const handleChange = (event: SelectChangeEvent<typeof code>) => {
-        const {
-            target: { value },
-        } = event;
-        setCode(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
+    const { onHealthRatingChange, entryFormData, onDiagnosesChange, onTypeChange, entryFormSetters } = useEntryForm();
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
-        onSubmit({ specialist, diagnosisCodes: code, healthCheckRating, description, date, type });
+        onSubmit({ ...entryFormData });
     };
-
     return (
         <div>
             <form onSubmit={addEntry}>
@@ -95,28 +57,28 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                     label="Specialist"
                     fullWidth
                     type="text"
-                    value={specialist}
-                    onChange={({ target }) => setSpecialist(target.value)}
+                    value={entryFormData.specialist}
+                    onChange={({ target }) => entryFormSetters.setSpecialist(target.value)}
                 />
                 <TextField
                     label="description"
                     fullWidth
-                    value={description}
-                    onChange={({ target }) => setDescription(target.value)}
+                    value={entryFormData.description}
+                    onChange={({ target }) => entryFormSetters.setDescription(target.value)}
                 />
                 <TextField
 
                     fullWidth
                     type="date"
-                    value={date}
-                    onChange={({ target }) => setEntryDate(target.value)}
+                    value={entryFormData.date}
+                    onChange={({ target }) => entryFormSetters.setEntryDate(target.value)}
                 />
 
                 <InputLabel sx={{ marginTop: 2.5 }}>Entry Type</InputLabel>
                 <Select
                     label="Type"
                     fullWidth
-                    value={type}
+                    value={entryFormData.type}
                     onChange={onTypeChange}>
                     {typeOptions.map(option =>
                         <MenuItem
@@ -130,7 +92,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                 <Select
                     label="Health Rating"
                     fullWidth
-                    value={healthCheckRating}
+                    value={entryFormData.healthCheckRating}
                     onChange={onHealthRatingChange}>
                     {healthOptions.map(option =>
                         <MenuItem
@@ -144,7 +106,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                 <InputLabel id='demo-multiple-name-label' sx={{ marginTop: 2.5 }} >Diagnoses</InputLabel>
                 <Select
                     multiple
-                    value={code}
+                    value={entryFormData.diagnosisCodes}
                     label="Diagnoses"
                     MenuProps={MenuProps}
                     renderValue={(selected) => (
@@ -154,7 +116,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                             ))}
                         </Box>
                     )}
-                    onChange={handleChange}
+                    onChange={onDiagnosesChange}
                 >
                     {diagnoses && diagnoses.map(option =>
                         <MenuItem

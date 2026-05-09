@@ -8,9 +8,7 @@ interface PatientProps {
     patients: Patient[];
     setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
 }
-// interface EntryProps {
-//     entry: Entry[];
-// }
+
 export default function usePatientModal({ patients, setPatients }: PatientProps) {
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
