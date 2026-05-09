@@ -24,7 +24,7 @@ export default function usePatientSubmit({ patients, setPatients }: PatientProps
     const submitNewPatient = async (values: PatientFormValues) => {
         try {
             const patient = await patientService.create(values);
-            setPatients(patients.concat(patient));
+            setPatients([...patients, { ...patient }]);
             setModalOpen(false);
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {

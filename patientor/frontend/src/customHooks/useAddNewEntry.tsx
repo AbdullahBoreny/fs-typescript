@@ -23,8 +23,11 @@ export default function useAddNewEntry(patients: Patient[], setPatients: Dispatc
             }
             const entry = await patientService.addEntry(patient.id, entryData);
 
-            setPatients([...patients, { ...patient, entries: patient.entries.concat(entry) }]);
-
+            setPatients(prev => [
+                ...prev.filter(p => p.id !== patient.id),
+                { ...patient, entries: patient.entries.concat(entry) }
+            ]);
+            console.log(patients);
             setModalOpen(false);
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
