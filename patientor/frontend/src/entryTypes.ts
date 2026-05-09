@@ -15,7 +15,7 @@ export interface BaseEntry {
     date?: string;
     specialist?: string;
     type: Type;
-    diagnosisCodes?: Array<Diagnosis['code']>;
+    diagnosisCodes: Array<Diagnosis['code']>;
     description?: string;
 }
 export const HealthCheckRating = {

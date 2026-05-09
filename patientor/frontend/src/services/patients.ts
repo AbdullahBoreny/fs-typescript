@@ -23,7 +23,7 @@ const create = async (object: PatientFormValues) => {
 
   return data;
 };
-const getDiagnosis = async () => {
+const getDiagnoses = async () => {
   const { data } = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`);
   return data;
 };
@@ -38,7 +38,7 @@ const addEntry = async (id: string, object: EntryWithoutId) => {
 
 export default {
   addEntry,
-  getDiagnosis,
+  getDiagnoses,
   getAll, create, getById
 };
 

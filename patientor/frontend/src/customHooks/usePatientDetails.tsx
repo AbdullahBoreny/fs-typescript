@@ -11,7 +11,7 @@ export default function usePatientDetails() {
 
 
     useEffect(() => {
-        patientsService.getDiagnosis()
+        patientsService.getDiagnoses()
             .then(data => setDiagnoses(data));
     }, []);
     useEffect(() => {
@@ -21,5 +21,5 @@ export default function usePatientDetails() {
         patientsService.getById(id)
             .then(data => setPatient(data));
     }, [id]);
-    return { patient, diagnoses, id, setPatient };
+    return { patient, diagnoses, id, setPatient, setDiagnoses };
 }

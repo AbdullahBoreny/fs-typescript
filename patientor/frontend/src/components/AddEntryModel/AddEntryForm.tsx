@@ -1,7 +1,9 @@
 import { useState, SyntheticEvent } from "react";
 
-import { TextField, Grid, Button, SelectChangeEvent, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, Grid, Button, SelectChangeEvent, InputLabel, Select, MenuItem, Box, Chip } from '@mui/material';
 import { EntryWithoutId, HealthCheckRating, Type } from "../../entryTypes";
+import usePatientDetails from "../../customHooks/usePatientDetails";
+import { Diagnosis } from "../../types";
 
 interface Props {
 
@@ -27,13 +29,29 @@ const healthOptions: HealthRatingOptions[] = Object.values(HealthCheckRating).ma
 const typeOptions: TypeOptions[] = Object.values(Type).map(v => ({
     value: v, label: v.toString(),
 }));
-
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    slotProps: {
+        paper: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    },
+};
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
+    const { diagnoses } = usePatientDetails();
+
     const [specialist, setSpecialist] = useState('');
     const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(HealthCheckRating.Healthy);
     const [date, setEntryDate] = useState('');
     const [description, setDescription] = useState('');
+    const [diagnosisCodes, setDiagnosisCodes] = useState<Array<Diagnosis['code']>>();
+    const [code, setCode] = useState<string[]>([]);
     const [type, setType] = useState<Type>(Type.HealthCheck);
+
 
     const onTypeChange = (event: SelectChangeEvent<string>) => {
         event.preventDefault();
@@ -47,7 +65,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
     };
     const onHealthRatingChange = (event: SelectChangeEvent<number>) => {
         event.preventDefault();
-        if (typeof event.target.value === "number" || typeof event.target.value == 'string') {
+        if (typeof event.target.value === "number") {
             const value = event.target.value;
             const ratingValue = Object.values(HealthCheckRating).find(t => t === value);
 
@@ -57,9 +75,18 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             }
         }
     };
+    const handleChange = (event: SelectChangeEvent<typeof code>) => {
+        const {
+            target: { value },
+        } = event;
+        setCode(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
-        onSubmit({ specialist, healthCheckRating, description, date, type });
+        onSubmit({ specialist, diagnosisCodes, healthCheckRating, description, date, type });
     };
 
     return (
@@ -111,6 +138,30 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                             key={option.label}
                             value={option.value}>
                             {option.value} - {option.key}
+
+                        </MenuItem>
+                    )}
+                </Select>
+                <InputLabel id='demo-multiple-name-label' sx={{ marginTop: 2.5 }} >Diagnoses</InputLabel>
+                <Select
+                    multiple
+                    value={code}
+                    label="Diagnoses"
+                    MenuProps={MenuProps}
+                    renderValue={(selected) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {selected.map((value) => (
+                                <Chip key={value} label={value} />
+                            ))}
+                        </Box>
+                    )}
+                    onChange={handleChange}
+                >
+                    {diagnoses && diagnoses.map(option =>
+                        <MenuItem
+                            key={option.code}
+                            value={option.name}>
+                            {option.code}
 
                         </MenuItem>
                     )}
