@@ -22,6 +22,7 @@ export default function PatientDetails() {
                 <h2>ssn: {patient?.ssn}</h2>
                 <h2>occupation: {patient?.occupation}</h2>
                 <h2>date of birth: {patient?.dateOfBirth}</h2>
+                
             </div>
             <div className='entires-container'>
                 {patient?.entries.length !== 0 ? <h1>entires</h1> : null}
@@ -29,11 +30,11 @@ export default function PatientDetails() {
                     <div className='entry' style={{ borderStyle: 'solid', borderColor: "red", borderWidth: '1px' }} key={entry.id}>
                         <EntryMapper entry={entry} />
 
-                        {entry.diagnosisCodes && <h2>diagnoses</h2>}
-
+                        {entry.diagnosisCodes && <h2>Diagnoses:</h2>}
+                        
                         {diagnoses?.map(diagnosis => (
                             entry.diagnosisCodes?.includes(diagnosis.code) &&
-                            <li key={diagnosis.code}>{diagnosis.code}  {diagnosis.name}</li>
+                            <h3 key={diagnosis.code}>{diagnosis.code} - {diagnosis.name}</h3>
                         ))}
 
 

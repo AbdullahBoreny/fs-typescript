@@ -30,18 +30,7 @@ const healthOptions: HealthRatingOptions[] = Object.values(HealthCheckRating).ma
 const typeOptions: TypeOptions[] = Object.values(Type).map(v => ({
     value: v, label: v.toString(),
 }));
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 10;
-const MenuProps = {
-    slotProps: {
-        paper: {
-            style: {
-                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                width: 250,
-            },
-        },
-    },
-};
+
 
 const AddEntryForm = ({ onCancel, onSubmit }: ModalProps) => {
     const { diagnoses } = usePatientDetails();
@@ -108,7 +97,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: ModalProps) => {
                     multiple
                     value={entryFormData.diagnosisCodes}
                     label="Diagnoses"
-                    MenuProps={MenuProps}
+
                     renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                             {selected.map((value) => (
