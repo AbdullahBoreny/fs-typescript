@@ -12,9 +12,21 @@ interface TypeOptions {
     value: Type;
     label: string;
 }
+interface HealthRatingOptions {
+    value: HealthCheckRating;
+    label: string;
+    key: string;
+}
+const keys = Object.keys(HealthCheckRating);
+
+const healthOptions: HealthRatingOptions[] = Object.values(HealthCheckRating).map(rating => ({
+    value: rating,
+    label: rating.toString(),
+    key: keys[Number(rating)]
+}));
 
 const typeOptions: TypeOptions[] = Object.values(Type).map(v => ({
-    value: v, label: v.toString()
+    value: v, label: v.toString(),
 }));
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
@@ -34,9 +46,18 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             }
         }
     };
+    const onHealthRatingChange = (event: SelectChangeEvent<number>) => {
+        event.preventDefault();
+        if (typeof event.target.value === "number" || typeof event.target.value == 'string') {
+            const value = event.target.value;
+            const ratingValue = Object.values(HealthCheckRating).find(t => t === value);
 
-
-
+            if (ratingValue) {
+                console.log();
+                setHealthCheckRating(ratingValue);
+            }
+        }
+    };
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
         onSubmit({ specialist, healthCheckRating, description, date, type });
@@ -59,19 +80,13 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                     onChange={({ target }) => setDescription(target.value)}
                 />
                 <TextField
-                    // label="Date of entry"
-                    placeholder="YYYY-MM-DD"
+
                     fullWidth
                     type="date"
                     value={date}
                     onChange={({ target }) => setEntryDate(target.value)}
                 />
-                <TextField
-                    label="Health Rating"
-                    fullWidth
-                    value={healthCheckRating}
-                    onChange={({ target }) => setHealthCheckRating(target.value)}
-                />
+
                 <InputLabel sx={{ marginTop: 2.5 }}>Entry Type</InputLabel>
                 <Select
                     label="Type"
@@ -83,6 +98,21 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                             key={option.label}
                             value={option.value}>
                             {option.label}
+                        </MenuItem>
+                    )}
+                </Select>
+                <InputLabel sx={{ marginTop: 2.5 }}>Health Rating</InputLabel>
+                <Select
+                    label="Health Rating"
+                    fullWidth
+                    value={healthCheckRating}
+                    onChange={onHealthRatingChange}>
+                    {healthOptions.map(option =>
+                        <MenuItem
+                            key={option.label}
+                            value={option.value}>
+                            {option.value} - {option.key}
+
                         </MenuItem>
                     )}
                 </Select>

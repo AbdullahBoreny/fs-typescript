@@ -4,7 +4,12 @@ export enum Type {
     OccupationalHealthcare = "OccupationalHealthcare",
     HealthCheck = "HealthCheck"
 }
-
+export enum Rating {
+    Healthy = '0',
+    LowRisk = '1',
+    HighRisk = '2',
+    CriticalRisk = '3'
+}
 export interface BaseEntry {
     id: string;
     date?: string;
