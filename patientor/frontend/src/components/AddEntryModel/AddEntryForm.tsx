@@ -18,7 +18,6 @@ interface HealthRatingOptions {
     key: string;
 }
 const keys = Object.keys(HealthCheckRating);
-
 const healthOptions: HealthRatingOptions[] = Object.values(HealthCheckRating).map(rating => ({
     value: rating,
     label: rating.toString(),
