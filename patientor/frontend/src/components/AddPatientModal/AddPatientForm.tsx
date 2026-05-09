@@ -24,7 +24,7 @@ const AddPatientForm = ({ onCancel, onSubmit }: Props) => {
   const [ssn, setSsn] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [gender, setGender] = useState(Gender.Other);
-
+//helper
   const onGenderChange = (event: SelectChangeEvent<string>) => {
     event.preventDefault();
     if (typeof event.target.value === "string") {
@@ -35,7 +35,7 @@ const AddPatientForm = ({ onCancel, onSubmit }: Props) => {
       }
     }
   };
-
+//acutal submit
   const addPatient = (event: SyntheticEvent) => {
     event.preventDefault();
     onSubmit({

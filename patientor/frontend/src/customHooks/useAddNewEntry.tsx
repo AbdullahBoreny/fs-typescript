@@ -1,19 +1,13 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import axios from 'axios';
-import { PatientFormValues, Patient } from "../types";
-
-
 import patientService from "../services/patients";
-interface PatientProps {
-    patients: Patient[];
-    setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
-}
+import { EntryWithoutId } from "../entryTypes";
+import { Patient } from "../types";
 
-export default function usePatientModal({ patients, setPatients }: PatientProps) {
 
+export default function useAddNewEntry(patients: Patient[], setPatients: Dispatch<SetStateAction<Patient[]>>, id: string | undefined) {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>();
-
     const openModal = (): void => setModalOpen(true);
 
     const closeModal = (): void => {
@@ -21,10 +15,16 @@ export default function usePatientModal({ patients, setPatients }: PatientProps)
         setError(undefined);
     };
 
-    const submitNewPatient = async (values: PatientFormValues) => {
+    const submitNewEntry = async (entryData: EntryWithoutId) => {
         try {
-            const patient = await patientService.create(values);
-            setPatients(patients.concat(patient));
+            const patient = patients.find(patient => patient.id === id);
+            if (!patient) {
+                throw new Error('not found');
+            }
+            const entry = await patientService.addEntry(patient.id, entryData);
+
+            setPatients([...patients, { ...patient, entries: patient.entries.concat(entry) }]);
+
             setModalOpen(false);
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
@@ -41,5 +41,5 @@ export default function usePatientModal({ patients, setPatients }: PatientProps)
             }
         }
     };
-    return { modalOpen, error, setError, openModal, submitNewPatient, closeModal };
+    return { modalOpen, error, setError, openModal, submitNewEntry, closeModal };
 }

@@ -2,10 +2,10 @@ import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBo
 import { Patient } from "../../types";
 import AddPatientModal from "../AddPatientModal";
 
-import HealthRatingBar from "./HealthRatingBar";
+import HealthRatingBar from "../HealthRatingBar";
 
 import { Link } from "react-router-dom";
-import usePatientModal from "../../customHooks/usePatientModal";
+import usePatientSubmit from '../../customHooks/usePatientSubmit';
 interface Props {
   patients: Patient[];
   setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
@@ -16,7 +16,7 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
   const { modalOpen,
     error,
     openModal,
-    closeModal, submitNewPatient } = usePatientModal({ patients, setPatients });
+    closeModal, submitNewPatient } = usePatientSubmit({ patients, setPatients });
 
   return (
     <div className="App">

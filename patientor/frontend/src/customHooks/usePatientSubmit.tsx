@@ -1,12 +1,16 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import axios from 'axios';
-import patientService from "../services/patients";
-import { EntryWithoutId } from "../entryTypes";
-import usePatientDetails from "./usePatientDetails";
-import { Patient } from "../types";
+import { PatientFormValues, Patient } from "../types";
 
-export default function useEntryModal(setPatient: Dispatch<SetStateAction<Patient | undefined>>, patient: Patient | undefined) {
-    const { id } = usePatientDetails();
+
+import patientService from "../services/patients";
+interface PatientProps {
+    patients: Patient[];
+    setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
+}
+
+export default function usePatientSubmit({ patients, setPatients }: PatientProps) {
+
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>();
 
@@ -17,17 +21,10 @@ export default function useEntryModal(setPatient: Dispatch<SetStateAction<Patien
         setError(undefined);
     };
 
-    const submitNewEntry = async (entryData: EntryWithoutId) => {
+    const submitNewPatient = async (values: PatientFormValues) => {
         try {
-            if (!id || !patient) {
-
-                throw new Error(id + 'not found');
-            }
-            console.log(id);
-            const entry = await patientService.addEntry(id, entryData);
-
-            setPatient({ ...patient, entries: patient.entries.concat(entry) });
-
+            const patient = await patientService.create(values);
+            setPatients(patients.concat(patient));
             setModalOpen(false);
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
@@ -44,5 +41,5 @@ export default function useEntryModal(setPatient: Dispatch<SetStateAction<Patien
             }
         }
     };
-    return { modalOpen, error, setError, openModal, submitNewEntry, closeModal };
+    return { modalOpen, error, setError, openModal, submitNewPatient, closeModal };
 }

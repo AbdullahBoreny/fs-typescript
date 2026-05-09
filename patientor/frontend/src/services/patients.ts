@@ -6,7 +6,7 @@ import { Entry, EntryWithoutId } from "../entryTypes";
 
 const getAll = async () => {
   const { data } = await axios.get<Patient[]>(
-    `${apiBaseUrl}/patients`
+    `${apiBaseUrl}/patients/hidden`
   );
 
   return data;

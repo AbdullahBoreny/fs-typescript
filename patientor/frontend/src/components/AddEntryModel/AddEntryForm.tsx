@@ -2,7 +2,7 @@ import { SyntheticEvent } from "react";
 
 import { TextField, Grid, Button, InputLabel, Select, MenuItem, Box, Chip } from '@mui/material';
 import { HealthCheckRating, Type } from "../../entryTypes";
-import usePatientDetails from "../../customHooks/usePatientDetails";
+import usePatientDetails from "../../customHooks/useDiagnosesFetch";
 import useEntryForm, { entryFormData } from "../../customHooks/useEntryForm";
 
 interface ModalProps {
