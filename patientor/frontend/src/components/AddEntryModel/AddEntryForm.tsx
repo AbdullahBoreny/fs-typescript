@@ -3,7 +3,6 @@ import { useState, SyntheticEvent } from "react";
 import { TextField, Grid, Button, SelectChangeEvent, InputLabel, Select, MenuItem, Box, Chip } from '@mui/material';
 import { EntryWithoutId, HealthCheckRating, Type } from "../../entryTypes";
 import usePatientDetails from "../../customHooks/usePatientDetails";
-import { Diagnosis } from "../../types";
 
 interface Props {
 
@@ -30,7 +29,7 @@ const typeOptions: TypeOptions[] = Object.values(Type).map(v => ({
     value: v, label: v.toString(),
 }));
 const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_PADDING_TOP = 10;
 const MenuProps = {
     slotProps: {
         paper: {
@@ -48,7 +47,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
     const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(HealthCheckRating.Healthy);
     const [date, setEntryDate] = useState('');
     const [description, setDescription] = useState('');
-    const [diagnosisCodes, setDiagnosisCodes] = useState<Array<Diagnosis['code']>>();
+    // const [diagnosisCodes, setDiagnosisCodes] = useState<Array<Diagnosis['code']>>();
     const [code, setCode] = useState<string[]>([]);
     const [type, setType] = useState<Type>(Type.HealthCheck);
 
@@ -86,7 +85,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
     };
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
-        onSubmit({ specialist, diagnosisCodes, healthCheckRating, description, date, type });
+        onSubmit({ specialist, diagnosisCodes: code, healthCheckRating, description, date, type });
     };
 
     return (
@@ -160,8 +159,8 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                     {diagnoses && diagnoses.map(option =>
                         <MenuItem
                             key={option.code}
-                            value={option.name}>
-                            {option.code}
+                            value={option.code}>
+                            {option.code}- {option.name}
 
                         </MenuItem>
                     )}
