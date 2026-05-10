@@ -2,7 +2,7 @@ import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBo
 import { Patient } from "../../types";
 import AddPatientModal from "../AddPatientModal";
 
-import HealthRatingBar from "../HealthRatingBar";
+import HealthRatingBar from "./HealthRatingBar";
 
 import { Link } from "react-router-dom";
 import usePatientSubmit from '../../customHooks/usePatientSubmit';

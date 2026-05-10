@@ -3,21 +3,23 @@ import { Female, Male } from '@mui/icons-material';
 import EntryMapper from './EntryMapper';
 import usePatientDetails from '../../customHooks/useDiagnosesFetch';
 import { Button } from '@mui/material';
-import AddEntryModal from '../AddEntryModel';
+import AddEntryModal, { ErrorMessage } from '../AddEntryModel';
 import { useParams } from 'react-router-dom';
 import useAddNewEntry from '../../customHooks/useAddNewEntry';
 interface Props {
     patients: Patient[];
     setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
+    error: ErrorMessage | undefined;
+    setError: React.Dispatch<React.SetStateAction<ErrorMessage | undefined>>;
 
 }
 
-export default function PatientDetails({ patients, setPatients }: Props) {
+export default function PatientDetails({ patients, setPatients, error, setError }: Props) {
     const { diagnoses } = usePatientDetails();
     const { id } = useParams();
 
 
-    const { openModal, submitNewEntry, error, closeModal, modalOpen } = useAddNewEntry(patients, setPatients, id);
+    const { openModal, submitNewEntry, closeModal, modalOpen } = useAddNewEntry(setError, patients, setPatients, id,);
     const patient = patients.find(patient => patient.id === id);
     return (
         <>
@@ -51,6 +53,7 @@ export default function PatientDetails({ patients, setPatients }: Props) {
                 ))}
             </div>
             <AddEntryModal
+
                 dialogTitle="Add New Entry"
                 modalOpen={modalOpen}
                 onSubmit={submitNewEntry}

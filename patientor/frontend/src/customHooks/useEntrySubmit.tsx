@@ -1,7 +1,7 @@
 import { SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
 import { HealthCheckRating, Type } from "../entryTypes";
-export interface entryFormData {
+export interface NewEntry {
     specialist: string,
     healthCheckRating: HealthCheckRating,
     date: string;
@@ -9,7 +9,7 @@ export interface entryFormData {
     type: Type,
     description: string;
 };
-export default function useEntryForm() {
+export default function useEntrySubmit() {
     const [specialist, setSpecialist] = useState('');
     const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(HealthCheckRating.Healthy);
     const [date, setEntryDate] = useState('');
@@ -17,7 +17,7 @@ export default function useEntryForm() {
     const [diagnosisCodes, setCode] = useState<string[]>([]);
     const [type, setType] = useState<Type>(Type.HealthCheck);
     const entryFormSetters = { setDescription, setEntryDate, setSpecialist };
-    const entryFormData: entryFormData = { specialist, healthCheckRating, date, diagnosisCodes, type, description };
+    const entryFormData: NewEntry = { specialist, healthCheckRating, date, diagnosisCodes, type, description };
     const onTypeChange = (event: SelectChangeEvent<string>) => {
         event.preventDefault();
         if (typeof event.target.value === "string") {

@@ -1,7 +1,7 @@
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useState } from "react";
 
 import { TextField, Grid, Button, InputLabel, Select, MenuItem, Box, Chip } from '@mui/material';
-import { HealthCheckRating, Type } from "../../entryTypes";
+import { Discharge, HealthCheckRating, Type } from "../../entryTypes";
 import { NewEntry } from "../../customHooks/useEntrySubmit";
 import useDiagnosesFetch from "../../customHooks/useDiagnosesFetch";
 import useEntrySubmit from "../../customHooks/useEntrySubmit";
@@ -30,14 +30,19 @@ const healthOptions: HealthRatingOptions[] = Object.values(HealthCheckRating).ma
 const typeOptions: TypeOptions[] = Object.values(Type).map(v => ({
     value: v, label: v.toString(),
 }));
+interface NewHospitalEntry extends NewEntry {
+    discharge?: Discharge;
+}
 
+const AddHospitalEntry = ({ onCancel, onSubmit }: ModalProps) => {
+    const [dischargeDetails, setDischarge] = useState<Discharge>();
 
-const AddEntryForm = ({ onCancel, onSubmit }: ModalProps) => {
     const { diagnoses } = useDiagnosesFetch();
     const { onHealthRatingChange, entryFormData, onDiagnosesChange, onTypeChange, entryFormSetters } = useEntrySubmit();
+    const Hospital: NewHospitalEntry = { ...entryFormData, discharge: dischargeDetails };
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
-        onSubmit({ ...entryFormData });
+        onSubmit({ ...Hospital, });
     };
     return (
         <div>
@@ -50,18 +55,34 @@ const AddEntryForm = ({ onCancel, onSubmit }: ModalProps) => {
                     onChange={({ target }) => entryFormSetters.setSpecialist(target.value)}
                 />
                 <TextField
-                    label="description"
+                    label="Description"
                     fullWidth
                     value={entryFormData.description}
                     onChange={({ target }) => entryFormSetters.setDescription(target.value)}
                 />
-                <InputLabel sx={{ marginTop: 2.5 }}>Entry Date</InputLabel>
                 <TextField
 
                     fullWidth
                     type="date"
                     value={entryFormData.date}
                     onChange={({ target }) => entryFormSetters.setEntryDate(target.value)}
+                />
+
+                <TextField
+                    label="Discharging criteria"
+                    fullWidth
+                    type="text"
+                    value={dischargeDetails?.criteria}
+                    onChange={({ target }) => setDischarge({ ...dischargeDetails, criteria: target.value })}
+                />
+                <InputLabel id='demo-multiple-name-label' sx={{ marginTop: 2.5 }} >Discharge Date</InputLabel>
+
+                <TextField
+
+                    fullWidth
+                    type="date"
+                    value={dischargeDetails?.date}
+                    onChange={({ target }) => setDischarge({ ...dischargeDetails, date: target.value })}
                 />
 
                 <InputLabel sx={{ marginTop: 2.5 }}>Entry Type</InputLabel>
@@ -145,4 +166,4 @@ const AddEntryForm = ({ onCancel, onSubmit }: ModalProps) => {
     );
 };
 
-export default AddEntryForm;
+export default AddHospitalEntry;

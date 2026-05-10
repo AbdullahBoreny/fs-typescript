@@ -3,11 +3,11 @@ import axios from 'axios';
 import patientService from "../services/patients";
 import { EntryWithoutId } from "../entryTypes";
 import { Patient } from "../types";
+import { ErrorMessage } from "../components/AddEntryModel";
 
 
-export default function useAddNewEntry(patients: Patient[], setPatients: Dispatch<SetStateAction<Patient[]>>, id: string | undefined) {
+export default function useAddNewEntry(setError: Dispatch<SetStateAction<ErrorMessage | undefined>>, patients: Patient[], setPatients: Dispatch<SetStateAction<Patient[]>>, id: string | undefined) {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [error, setError] = useState<string | undefined>();
     const openModal = (): void => setModalOpen(true);
 
     const closeModal = (): void => {
@@ -31,18 +31,11 @@ export default function useAddNewEntry(patients: Patient[], setPatients: Dispatc
             setModalOpen(false);
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {
-                if (e?.response?.data && typeof e?.response?.data === "string") {
-                    const message = e.response.data.replace('Something went wrong. Error: ', '');
-                    console.error(message);
-                    setError(message);
-                } else {
-                    setError("Unrecognized axios error");
-                }
-            } else {
-                console.error("Unknown error", e);
-                setError("Unknown error");
+
+                console.error(e.response?.data);
+                setError(e.response?.data);
             }
         }
     };
-    return { modalOpen, error, setError, openModal, submitNewEntry, closeModal };
+    return { modalOpen, setError, openModal, submitNewEntry, closeModal };
 }
