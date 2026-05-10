@@ -7,7 +7,7 @@ import { Patient } from "../types";
 
 export default function useAddNewEntry(patients: Patient[], setPatients: Dispatch<SetStateAction<Patient[]>>, id: string | undefined) {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [error, setError] = useState<string>();
+    const [error, setError] = useState<string | undefined>();
     const openModal = (): void => setModalOpen(true);
 
     const closeModal = (): void => {
@@ -22,12 +22,12 @@ export default function useAddNewEntry(patients: Patient[], setPatients: Dispatc
                 throw new Error('not found');
             }
             const entry = await patientService.addEntry(patient.id, entryData);
-
-            setPatients(prev => [
-                ...prev.filter(p => p.id !== patient.id),
+            const patientsWithoutId = patients.filter(p => p.id !== patient.id);
+            setPatients([
+                ...patientsWithoutId,
                 { ...patient, entries: patient.entries.concat(entry) }
             ]);
-            console.log(patients);
+
             setModalOpen(false);
         } catch (e: unknown) {
             if (axios.isAxiosError(e)) {

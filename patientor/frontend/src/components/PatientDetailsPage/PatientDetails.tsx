@@ -15,9 +15,10 @@ interface Props {
 export default function PatientDetails({ patients, setPatients }: Props) {
     const { diagnoses } = usePatientDetails();
     const { id } = useParams();
-    const patient = patients.find(patient => patient.id === id);
+
 
     const { openModal, submitNewEntry, error, closeModal, modalOpen } = useAddNewEntry(patients, setPatients, id);
+    const patient = patients.find(patient => patient.id === id);
     return (
         <>
             <div className='personal-info'>
